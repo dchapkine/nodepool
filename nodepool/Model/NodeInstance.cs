@@ -259,7 +259,7 @@ namespace nodepool.Model
 
                 _inspectorProcess = System.Diagnostics.Process.Start(info);
                 _inspectorProcess.EnableRaisingEvents = true;
-                //_inspectorProcess.Exited += new EventHandler(process_Exited);
+                _inspectorProcess.Exited += new EventHandler(inspector_Exited);
                 //_inspectorProcess.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
                 //_inspectorProcess.ErrorDataReceived += new DataReceivedEventHandler(process_ErrorDataReceived);
                 //OnNodeInstanceStarted(new NodeInstanceStartedEventArgs(this));
@@ -409,6 +409,50 @@ namespace nodepool.Model
                 debug();
             else
                 run();
+        }
+
+        #endregion
+
+        #region InspectorProcessEventHandlers
+
+
+        private void inspector_Exited(object sender, System.EventArgs e)
+        {
+            if (_inspectorProcess != null)
+            {
+                try
+                {
+                    /*
+                    String b = "";
+                    String o = "";
+
+                    // On lit le stdOUT jusqu'au bout
+                    while ((b = _inspectorProcess.StandardOutput.ReadLine()) != null)
+                    {
+                        o = o + "\r\n" + b;
+                    }
+                    // On lit le stdERR jusqu'au bout
+                    while ((b = _inspectorProcess.StandardError.ReadLine()) != null)
+                    {
+                        o = o + "\r\n" + b;
+                    }
+                    */
+
+                    Console.WriteLine("NODE INSPECTOR EXITED");
+                    Console.WriteLine(_inspectorProcess.StandardOutput.ReadToEnd());
+                    Console.WriteLine(_inspectorProcess.StandardError.ReadToEnd());
+                    Console.WriteLine("Exit time:    {0}\r\n" + "Exit code:    {1}\r\nElapsed time: ???", _inspectorProcess.ExitTime, _inspectorProcess.ExitCode);
+
+
+
+
+
+                }
+                catch
+                { }
+
+                _inspectorProcess = null;
+            }
         }
 
         #endregion

@@ -255,8 +255,7 @@ namespace nodepool.UserControl
         private void clearButton_Click(object sender, EventArgs e)
         {
             _nodeInstance.clearStandardOutputString();
-            //textBox1.Text = "";
-            // TODO
+            outTextBox.Text = "";
         }
 
         /**
