@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{660C792A-85F0-467D-83F8-BB15E0E1C8B4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nodepool</RootNamespace>
+    <AssemblyName>nodepool</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Event\NodeInstanceStandardOutputEvent.cs" />
+    <Compile Include="Event\NodeInstanceStoppedEvent.cs" />
+    <Compile Include="Event\NodeInstanceStartedEvent.cs" />
+    <Compile Include="Event\NodeInstanceCreatedEvent.cs" />
+    <Compile Include="Form\AddNodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\AddNodeForm.Designer.cs">
+      <DependentUpon>AddNodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Class1.cs" />
+    <Compile Include="Form\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\NodeInstanceStandardOutputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NodeInstanceStandardOutputForm.Designer.cs">
+      <DependentUpon>NodeInstanceStandardOutputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\NodeInstance.cs" />
+    <Compile Include="Model\NodeInstanceToolStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Model\NodePool.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\icon.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>icon.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\LocalHost.cs" />
+    <Compile Include="Tools\RuntimeUniqueId.cs" />
+    <Compile Include="UserControl\NodeInstanceMainMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\NodeInstanceMainMenu.Designer.cs">
+      <DependentUpon>NodeInstanceMainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\NpmTerminal.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\NpmTerminal.Designer.cs">
+      <DependentUpon>NpmTerminal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\NodeInstanceTerminal.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl\NodeInstanceTerminal.Designer.cs">
+      <DependentUpon>NodeInstanceTerminal.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form\AddNodeForm.resx">
+      <DependentUpon>AddNodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NodeInstanceStandardOutputForm.resx">
+      <DependentUpon>NodeInstanceStandardOutputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Resources\icon.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>icon.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\NodeInstanceMainMenu.resx">
+      <DependentUpon>NodeInstanceMainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\NpmTerminal.resx">
+      <DependentUpon>NpmTerminal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\NodeInstanceTerminal.resx">
+      <DependentUpon>NodeInstanceTerminal.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\systray.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\play-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\play-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restart-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restart-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop-161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\play-161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restart-161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cmd-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cmd-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\openinexplorer-16.png" />
+    <None Include="Resources\clear-16x16.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)\Resources\node-inspector\*" "$(TargetDir)\Resources\node-inspector" /E /I /F /Y
+
+xcopy "$(ProjectDir)\Resources\nodejs\*" "$(TargetDir)\Resources\nodejs" /E /I /F /Y
+xcopy "$(ProjectDir)\Resources\nodejs\node0.6.6\node_modules\socket.io\*" "$(TargetDir)\Resources\nodejs\node0.6.6\node_modules\socket.io" /E /I /F /Y
+xcopy "$(ProjectDir)\Resources\nodejs\node0.6.6\node_modules\node-inspector\*" "$(TargetDir)\Resources\nodejs\node0.6.6\node_modules\node-inspector" /E /I /F /Y
+xcopy "$(ProjectDir)\Resources\nodejs\node0.6.6\node_modules\npm\*" "$(TargetDir)\Resources\nodejs\node0.6.6\node_modules\npm" /E /I /F /Y
+
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
