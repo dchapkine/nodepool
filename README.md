@@ -11,7 +11,7 @@ Think of it as the [wamp](http://wampserver.com/en/) or [xampp](http://www.apach
 NodePool is NOT a text editor/ide but plays nice with any text editor/ide.
 
 
-![Screenshot](./doc/screen01.png "Screenshot")
+![Screenshot](https://github.com/dchapkine/nodepool/raw/master/doc/screen01.png "Screenshot")
 
 
 
