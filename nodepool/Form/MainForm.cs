@@ -49,6 +49,9 @@ namespace nodepool
         // On quite
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // On sauvegarde le profil
+            UserProfile.getInstance().save();
+
             // On kill tous les nodes qui tournent
             //NodePool.getInstance().Dispose();
             NodePool.disposeAllInstances();
@@ -85,6 +88,9 @@ namespace nodepool
             //
             systrayMenuStrip.ItemClicked += new ToolStripItemClickedEventHandler(systrayMenuStrip_ItemClicked);
 
+            // Load user config (=profile)
+            UserProfile.getInstance().load();
+
             //
             systray.ShowBalloonTip(100, "NodePool", "\nNodePool is now running in background...\n", new ToolTipIcon());
 
@@ -101,6 +107,7 @@ namespace nodepool
             */
 
             var nodeinst = new NodeInstanceToolStripItem(e.nodeInstance);
+            nodeinst.Image = global::nodepool.Resources.icon.stop_16;
             systrayMenuStrip.Items.Insert(0, nodeinst);
         }
 

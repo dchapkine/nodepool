@@ -32,14 +32,15 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.instanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nodeVersionChooser = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.startButton = new System.Windows.Forms.ToolStripMenuItem();
             this.debugButton = new System.Windows.Forms.ToolStripMenuItem();
             this.stopButton = new System.Windows.Forms.ToolStripMenuItem();
             this.restartButton = new System.Windows.Forms.ToolStripMenuItem();
             this.restartOnCrashButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureRestartOnFIleChangePatterns = new System.Windows.Forms.ToolStripMenuItem();
             this.restartOnSourceChangeButton = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nodepoolgithubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +66,7 @@
             this.stopButton,
             this.restartButton,
             this.restartOnCrashButton,
+            this.configureRestartOnFIleChangePatterns,
             this.restartOnSourceChangeButton});
             this.instanceToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("instanceToolStripMenuItem.Image")));
             this.instanceToolStripMenuItem.Name = "instanceToolStripMenuItem";
@@ -73,27 +75,17 @@
             // 
             // nodeVersionChooser
             // 
-            this.nodeVersionChooser.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2});
             this.nodeVersionChooser.Enabled = false;
             this.nodeVersionChooser.Image = ((System.Drawing.Image)(resources.GetObject("nodeVersionChooser.Image")));
             this.nodeVersionChooser.Name = "nodeVersionChooser";
-            this.nodeVersionChooser.Size = new System.Drawing.Size(203, 22);
+            this.nodeVersionChooser.Size = new System.Drawing.Size(296, 22);
             this.nodeVersionChooser.Text = "Node version";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Checked = true;
-            this.toolStripMenuItem2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem2.Text = "0.6.6";
             // 
             // startButton
             // 
             this.startButton.Image = ((System.Drawing.Image)(resources.GetObject("startButton.Image")));
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(203, 22);
+            this.startButton.Size = new System.Drawing.Size(296, 22);
             this.startButton.Text = "Start";
             this.startButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
@@ -101,7 +93,7 @@
             // 
             this.debugButton.Image = ((System.Drawing.Image)(resources.GetObject("debugButton.Image")));
             this.debugButton.Name = "debugButton";
-            this.debugButton.Size = new System.Drawing.Size(203, 22);
+            this.debugButton.Size = new System.Drawing.Size(296, 22);
             this.debugButton.Text = "Debug";
             this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
             // 
@@ -109,7 +101,7 @@
             // 
             this.stopButton.Image = ((System.Drawing.Image)(resources.GetObject("stopButton.Image")));
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(203, 22);
+            this.stopButton.Size = new System.Drawing.Size(296, 22);
             this.stopButton.Text = "Stop";
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
@@ -117,31 +109,48 @@
             // 
             this.restartButton.Image = ((System.Drawing.Image)(resources.GetObject("restartButton.Image")));
             this.restartButton.Name = "restartButton";
-            this.restartButton.Size = new System.Drawing.Size(203, 22);
+            this.restartButton.Size = new System.Drawing.Size(296, 22);
             this.restartButton.Text = "Restart";
             this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
             // 
             // restartOnCrashButton
             // 
             this.restartOnCrashButton.Name = "restartOnCrashButton";
-            this.restartOnCrashButton.Size = new System.Drawing.Size(203, 22);
+            this.restartOnCrashButton.Size = new System.Drawing.Size(296, 22);
             this.restartOnCrashButton.Text = "RestartOnCrash";
             this.restartOnCrashButton.Click += new System.EventHandler(this.restartOnCrashButton_Click);
+            // 
+            // configureRestartOnFIleChangePatterns
+            // 
+            this.configureRestartOnFIleChangePatterns.Name = "configureRestartOnFIleChangePatterns";
+            this.configureRestartOnFIleChangePatterns.Size = new System.Drawing.Size(296, 22);
+            this.configureRestartOnFIleChangePatterns.Text = "Configure Restart On File Change Patterns";
+            this.configureRestartOnFIleChangePatterns.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            this.configureRestartOnFIleChangePatterns.Click += new System.EventHandler(this.configureRestartOnFIleChangePatterns_Click);
             // 
             // restartOnSourceChangeButton
             // 
             this.restartOnSourceChangeButton.Checked = true;
             this.restartOnSourceChangeButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.restartOnSourceChangeButton.Name = "restartOnSourceChangeButton";
-            this.restartOnSourceChangeButton.Size = new System.Drawing.Size(203, 22);
+            this.restartOnSourceChangeButton.Size = new System.Drawing.Size(296, 22);
             this.restartOnSourceChangeButton.Text = "RestartOnSourceChange";
             this.restartOnSourceChangeButton.Click += new System.EventHandler(this.restartOnSourceChangeButton_Click);
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nodepoolgithubToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 23);
             this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // nodepoolgithubToolStripMenuItem
+            // 
+            this.nodepoolgithubToolStripMenuItem.Name = "nodepoolgithubToolStripMenuItem";
+            this.nodepoolgithubToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.nodepoolgithubToolStripMenuItem.Text = "nodepool@github";
+            this.nodepoolgithubToolStripMenuItem.Click += new System.EventHandler(this.nodepoolgithubToolStripMenuItem_Click);
             // 
             // NodeInstanceMainMenu
             // 
@@ -165,10 +174,11 @@
         private System.Windows.Forms.ToolStripMenuItem nodeVersionChooser;
         private System.Windows.Forms.ToolStripMenuItem stopButton;
         private System.Windows.Forms.ToolStripMenuItem startButton;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem restartButton;
         private System.Windows.Forms.ToolStripMenuItem restartOnCrashButton;
         private System.Windows.Forms.ToolStripMenuItem restartOnSourceChangeButton;
         private System.Windows.Forms.ToolStripMenuItem debugButton;
+        private System.Windows.Forms.ToolStripMenuItem configureRestartOnFIleChangePatterns;
+        private System.Windows.Forms.ToolStripMenuItem nodepoolgithubToolStripMenuItem;
     }
 }

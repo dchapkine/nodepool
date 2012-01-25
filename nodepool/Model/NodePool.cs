@@ -41,6 +41,7 @@ namespace nodepool.Model
         #region Events
 
         public event NodeInstanceCreatedEventHandler NodeInstanceCreated;
+        public event NodeInstanceRemovedEventHandler NodeInstanceRemoved;
         public event NodeInstanceStartedEventHandler NodeInstanceStarted;
         public event NodeInstanceStoppedEventHandler NodeInstanceStopped;
 
@@ -63,6 +64,12 @@ namespace nodepool.Model
         {
             if (NodeInstanceCreated != null)
                 NodeInstanceCreated(this, e);
+        }
+
+        public void OnNodeInstanceRemoved(NodeInstanceRemovedEventArgs e = null)
+        {
+            if (NodeInstanceRemoved != null)
+                NodeInstanceRemoved(this, e);
         }
 
         public void OnNodeInstanceStarted(NodeInstanceStartedEventArgs e = null)
@@ -139,6 +146,19 @@ namespace nodepool.Model
             }
         }
 
+        public void removeNodeInstance(NodeInstance i)
+        {
+            foreach (NodeInstance ii in _nodeInstances)
+            {
+                if (i == ii)
+                {
+                    OnNodeInstanceRemoved(new NodeInstanceRemovedEventArgs(ii));
+                    _nodeInstances.Remove(ii);
+                    return;
+                }
+            }
+        }
+
         public IEnumerable<NodeInstance> getAllNodeInstances()
         {
             return _nodeInstances;
@@ -155,6 +175,7 @@ namespace nodepool.Model
             {
                 _nodeInstances[0].Dispose();
                 _nodeInstances[0] = null;
+                OnNodeInstanceRemoved(new NodeInstanceRemovedEventArgs(_nodeInstances[0]));
                 _nodeInstances.RemoveAt(0);
             }
         }

@@ -31,10 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddNodeForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.restartOnChangeTextBox = new System.Windows.Forms.TextBox();
             this.browseMainFileButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.saveLocalConfigCheckBox = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.nodeJsComboBox = new System.Windows.Forms.ComboBox();
             this.restartOnFileChangesCheckBox = new System.Windows.Forms.CheckBox();
@@ -57,10 +56,9 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.restartOnChangeTextBox);
             this.groupBox1.Controls.Add(this.browseMainFileButton);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.saveLocalConfigCheckBox);
-            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.nodeJsComboBox);
             this.groupBox1.Controls.Add(this.restartOnFileChangesCheckBox);
@@ -75,6 +73,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add node instance...";
+            // 
+            // restartOnChangeTextBox
+            // 
+            this.restartOnChangeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartOnChangeTextBox.Location = new System.Drawing.Point(236, 188);
+            this.restartOnChangeTextBox.Multiline = true;
+            this.restartOnChangeTextBox.Name = "restartOnChangeTextBox";
+            this.restartOnChangeTextBox.Size = new System.Drawing.Size(248, 101);
+            this.restartOnChangeTextBox.TabIndex = 14;
             // 
             // browseMainFileButton
             // 
@@ -96,26 +104,6 @@
             this.label2.Size = new System.Drawing.Size(62, 13);
             this.label2.TabIndex = 12;
             this.label2.Text = "Main .js file:";
-            // 
-            // saveLocalConfigCheckBox
-            // 
-            this.saveLocalConfigCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.saveLocalConfigCheckBox.AutoSize = true;
-            this.saveLocalConfigCheckBox.Enabled = false;
-            this.saveLocalConfigCheckBox.Location = new System.Drawing.Point(341, 222);
-            this.saveLocalConfigCheckBox.Name = "saveLocalConfigCheckBox";
-            this.saveLocalConfigCheckBox.Size = new System.Drawing.Size(15, 14);
-            this.saveLocalConfigCheckBox.TabIndex = 11;
-            this.saveLocalConfigCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 222);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(149, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Save this node in local config:";
             // 
             // label5
             // 
@@ -142,20 +130,21 @@
             this.restartOnFileChangesCheckBox.AutoSize = true;
             this.restartOnFileChangesCheckBox.Checked = true;
             this.restartOnFileChangesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.restartOnFileChangesCheckBox.Location = new System.Drawing.Point(341, 188);
+            this.restartOnFileChangesCheckBox.Location = new System.Drawing.Point(215, 187);
             this.restartOnFileChangesCheckBox.Name = "restartOnFileChangesCheckBox";
             this.restartOnFileChangesCheckBox.Size = new System.Drawing.Size(15, 14);
             this.restartOnFileChangesCheckBox.TabIndex = 7;
             this.restartOnFileChangesCheckBox.UseVisualStyleBackColor = true;
+            this.restartOnFileChangesCheckBox.CheckedChanged += new System.EventHandler(this.restartOnFileChangesCheckBox_CheckedChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(18, 188);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(187, 13);
+            this.label4.Size = new System.Drawing.Size(162, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Restart instance on main file changes:";
+            this.label4.Text = "Restart instance on file changes:";
             // 
             // restartOnCrashCheckBox
             // 
@@ -222,6 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(546, 378);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
@@ -256,9 +246,8 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ErrorProvider instanceNameErrorProvider;
         private System.Windows.Forms.ErrorProvider browseMainFileErrorProvider;
-        private System.Windows.Forms.CheckBox saveLocalConfigCheckBox;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button browseMainFileButton;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox restartOnChangeTextBox;
     }
 }

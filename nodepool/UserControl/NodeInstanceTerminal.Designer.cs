@@ -119,6 +119,7 @@
             this.debugInExternalBrowserToolStripMenuItem.Size = new System.Drawing.Size(526, 22);
             this.debugInExternalBrowserToolStripMenuItem.Text = "Debug in External browser (works on chrome only) - Just hit refresh if it shows e" +
                 "rror ;-)";
+            this.debugInExternalBrowserToolStripMenuItem.Click += new System.EventHandler(this.debugInExternalBrowserToolStripMenuItem_Click_1);
             // 
             // stopButton
             // 

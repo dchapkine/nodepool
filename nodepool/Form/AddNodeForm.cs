@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using nodepool.Model;
+using nodepool.Tools;
 
 namespace nodepool
 {
@@ -19,9 +20,16 @@ namespace nodepool
             nodeJsComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             //nodeJsComboBox.Items.Add("node0.4.0-on-cygwin");
             //nodeJsComboBox.Items.Add("node0.5.8");
-            nodeJsComboBox.Items.Add("node0.6.6");
-            nodeJsComboBox.SelectedIndex = 0;
+            //nodeJsComboBox.Items.Add("node0.6.6");
+            
+            foreach (string v in LocalHost.listInstalledNodeVersions())
+            {
+                nodeJsComboBox.Items.Add(v);
+            }
+            nodeJsComboBox.SelectedIndex = nodeJsComboBox.Items.Count - 1;
 
+
+            LocalHost.listInstalledNodeVersions();
         }
 
         // On specifie le fichier principal
@@ -34,6 +42,11 @@ namespace nodepool
                 if (instanceNameTextBox.Text.Trim() == "")
                 {
                     instanceNameTextBox.Text = System.IO.Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
+                }
+
+                if (restartOnChangeTextBox.Text.Trim() == "")
+                {
+                    restartOnChangeTextBox.Text = "*.js";
                 }
             }
             validate();
@@ -111,6 +124,7 @@ namespace nodepool
             {
                 var node = NodePool.getInstance().createNodeInstance((String)(nodeJsComboBox.Items[nodeJsComboBox.SelectedIndex]), instanceNameTextBox.Text.Trim(), openFileDialog1.FileName);
                 node.restartOnCrash = restartOnCrashCheckBox.Checked;
+                node.restartOnFileChangePatternsString = restartOnChangeTextBox.Text;
                 node.restartOnMainJsFileChange = restartOnFileChangesCheckBox.Checked;
                 node.run();
                 Close();
@@ -128,6 +142,12 @@ namespace nodepool
         private void AddNodeForm_Load(object sender, EventArgs e)
         {
             validate();
+        }
+
+        // restart on change checkbox
+        private void restartOnFileChangesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            restartOnChangeTextBox.Enabled = !restartOnChangeTextBox.Enabled;
         }
     }
 }

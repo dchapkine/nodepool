@@ -267,21 +267,6 @@ namespace nodepool.UserControl
             System.Diagnostics.Process.Start(System.IO.Path.GetDirectoryName(_nodeInstance.mainJsFilePath));
         }
 
-        /**
-         * [EN]
-         * Debug in external browser
-         * 
-         * Awesomium support dropped: too slow and buggy (<select> elements doesn't show off)
-            webControl.Source = new System.Uri("http://localhost:" + _nodeInstance.webDebugPort + "/debug?port=" + _nodeInstance.debugPort);
-            webControl.InputController.IsKeyboardIgnored = false; // not necessary
-            webControl.InputController.IsMouseIgnored = false; // not necessary
-            tabControl.TabPages.Add(_debugTabPage);
-            webControl.Focus();
-         */
-        private void debugInExternalBrowserToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _nodeInstance.debug();
-        }
 
         /**
          * [EN]
@@ -297,6 +282,23 @@ namespace nodepool.UserControl
         public void focusStdIn()
         {
             inTextBox.Focus();
+        }
+
+
+        /**
+         * [EN]
+         * Debug in external browser
+         * 
+         * Awesomium support dropped: too slow and buggy (<select> elements doesn't show off)
+            webControl.Source = new System.Uri("http://localhost:" + _nodeInstance.webDebugPort + "/debug?port=" + _nodeInstance.debugPort);
+            webControl.InputController.IsKeyboardIgnored = false; // not necessary
+            webControl.InputController.IsMouseIgnored = false; // not necessary
+            tabControl.TabPages.Add(_debugTabPage);
+            webControl.Focus();
+         */
+        private void debugInExternalBrowserToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            _nodeInstance.debug();
         }
     }
 }

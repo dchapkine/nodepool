@@ -36,11 +36,12 @@ The externally maintained libraries used by nodepool are:
 
   - nodejs
 	@see https://github.com/joyent/node/blob/master/LICENSE
+
+  - npm
+	@see https://github.com/isaacs/npm/blob/master/LICENSE
   
   - node inspector and its dependencies
 	@see https://github.com/dannycoates/node-inspector/blob/master/LICENSE
-
-	
 	
 	
 	

@@ -36,6 +36,10 @@ namespace nodepool.Model
             tmp.Width = 50;
             this.DropDownItems.Add(tmp);
 
+            tmp = new ToolStripButton("remove", global::nodepool.Resources.icon.remove_16, onRemove);
+            tmp.Width = 50;
+            this.DropDownItems.Add(tmp);
+
         }
 
         public void onStart(object sender, EventArgs e)
@@ -51,6 +55,15 @@ namespace nodepool.Model
         public void onRestart(object sender, EventArgs e)
         {
             _nodeInstance.restart();
+        }
+
+        public void onRemove(object sender, EventArgs e)
+        {
+            _nodeInstance.kill();
+            _nodeInstance.Dispose();
+            NodePool.getInstance().removeNodeInstance(_nodeInstance);
+
+            Parent.Items.Remove(this);
         }
 
         public void onOutput(object sender, EventArgs e)

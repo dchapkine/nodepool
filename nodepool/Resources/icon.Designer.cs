@@ -130,6 +130,13 @@ namespace nodepool.Resources {
             }
         }
         
+        internal static System.Drawing.Bitmap remove_16 {
+            get {
+                object obj = ResourceManager.GetObject("remove_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap restart_16 {
             get {
                 object obj = ResourceManager.GetObject("restart_16", resourceCulture);

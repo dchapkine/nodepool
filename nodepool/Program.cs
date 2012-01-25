@@ -25,14 +25,9 @@ namespace nodepool
         [STAThread]
         static void Main()
         {
-
-            // Standart
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-
-            // Standart
-            System.Windows.Forms.Application.Run(new Class1());
+            System.Windows.Forms.Application.Run(new AppContext());
         }
 
     }

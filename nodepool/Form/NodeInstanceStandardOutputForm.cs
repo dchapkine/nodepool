@@ -25,9 +25,20 @@ namespace nodepool.Form
             InitializeComponent();
 
             //
+            // Title
+            //
+            Text = n.name;
+
+            //
+            // NodePool events
+            //
+            NodePool.getInstance().NodeInstanceRemoved += new NodeInstanceRemovedEventHandler(_NodeInstanceRemoved);
+
+            //
             // APP instance
             //
             _nodeInstance = n;
+            nodeInstanceMainMenu1.init();
             nodeInstanceMainMenu1.nodeInstance = _nodeInstance;
             nodeTerminal.nodeInstance = _nodeInstance;
             //_nodeInstance.run();
@@ -40,7 +51,7 @@ namespace nodepool.Form
             _npmInstance.name = "______NPM______";
             _npmInstance.mainJsFilePath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"Resources\nodejs\node0.6.6\node_modules\npm\cli.js");
             */
-            _npmInstance = NodePool.getInstance("npm").createNodeInstance(_nodeInstance.nodeVersion, _nodeInstance.name + "______NPM______" + RuntimeUniqueId.getAsString(), Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"Resources\nodejs\node0.6.6\node_modules\npm\cli.js"));
+            _npmInstance = NodePool.getInstance("npm").createNodeInstance(_nodeInstance.nodeVersion, _nodeInstance.name + "______NPM______" + RuntimeUniqueId.getAsString(), Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"Resources\nodejs\" + LocalHost.getLatestInstalledNodeVersion() + @"\node_modules\npm\cli.js"));
             _npmInstance.restartOnCrash = false;
             _npmInstance.restartOnMainJsFileChange = false;
             _npmInstance.workingDirectory = Path.GetDirectoryName(_nodeInstance.mainJsFilePath);// set working directory for local npm
@@ -91,5 +102,11 @@ namespace nodepool.Form
             }
         }
 
+
+        private void _NodeInstanceRemoved(object sender, NodeInstanceRemovedEventArgs args)
+        {
+            if (args.nodeInstance == _nodeInstance)
+                Close();
+        }
     }
 }

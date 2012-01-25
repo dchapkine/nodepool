@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using nodepool.Model;
 using nodepool.Event;
+using nodepool.Tools;
+using nodepool.Form;
 
 namespace nodepool.UserControl
 {
@@ -18,6 +20,18 @@ namespace nodepool.UserControl
         public NodeInstanceMainMenu()
         {
             InitializeComponent();
+        }
+
+        /**
+         * [EN]
+         * Has to be called outside the constructor to not to bug the visual designer (because of the call to LocalHost.listInstalledNodeVersions)
+         */
+        public void init()
+        {
+            foreach (String v in LocalHost.listInstalledNodeVersions())
+            {
+                nodeVersionChooser.DropDownItems.Add(v);
+            }
         }
 
 
@@ -134,6 +148,16 @@ namespace nodepool.UserControl
         private void debugButton_Click(object sender, EventArgs e)
         {
             _nodeInstance.debug();
+        }
+
+        private void configureRestartOnFIleChangePatterns_Click(object sender, EventArgs e)
+        {
+            new RestartOnChangePatternsForm(_nodeInstance).Show();
+        }
+
+        private void nodepoolgithubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/dchapkine/nodepool");
         }
     }
 }

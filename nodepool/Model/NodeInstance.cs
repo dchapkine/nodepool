@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using nodepool.Event;
 using nodepool.Tools;
+using System.Text.RegularExpressions;
 
 namespace nodepool.Model
 {
@@ -16,6 +17,10 @@ namespace nodepool.Model
 
         // Unique name given to the instance
         public string name;
+
+        // Last time we checked process infos (cpu usage, memory, ...)
+        private DateTime _lastProcessInfoCheck;
+        private Timer _processInfoTimer;
         
         // Full path to main javascript file of the node application
         public string mainJsFilePath;
@@ -23,8 +28,12 @@ namespace nodepool.Model
         // Restart this node instance on crash or not ??
         public bool restartOnCrash;
 
-        // Restart this node instance on main file change?
-        private bool _restartOnMainJsFileChange;
+        // Patterns representing files/directories on disk. Node instance will restart if files matching this patterns are added/updated
+        private List<Regex> _restartOnFileChangePatterns;
+        private String _restartOnFileChangePatternsString;
+
+        // Restart this node instance when files matching "_restartOnFileChangePatterns" change
+        private bool _restartOnFileChange;
 
         // Node process
         private System.Diagnostics.Process _process;
@@ -64,6 +73,57 @@ namespace nodepool.Model
         #region Properties
 
 
+        public float cpuLoad
+        {
+            get
+            {
+                if (_process != null && !_process.HasExited)
+                {
+                    float ret = 0;
+
+                    using (PerformanceCounter pcProcess = new PerformanceCounter("Process", "% Processor Time", _process.ProcessName))
+                    {
+                        pcProcess.NextValue();
+                        System.Threading.Thread.Sleep(1000);
+                        ret = pcProcess.NextValue();
+                    }
+
+                    return ret;
+                }
+                return 0;
+            }
+        }
+
+        public Int64 ramUsage
+        {
+            get
+            {
+                if (_process != null && !_process.HasExited)
+                {
+                    return _process.PeakWorkingSet64;
+                }
+                return 0;
+            }
+        }
+
+        public String restartOnFileChangePatternsString
+        {
+            get
+            {
+                return _restartOnFileChangePatternsString;
+            }
+            set
+            {
+                _restartOnFileChangePatternsString = value;
+                _restartOnFileChangePatterns = new List<Regex>();
+                foreach (String s in value.Split(new string[]{"\r\n"}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    String s2 = String.Format("(.*){0}$", Regex.Escape(s.Replace("/", @"\")).Replace(@"\*", ".*").Replace(@"\?", "."));
+                    _restartOnFileChangePatterns.Add(new Regex(s2));
+                }
+            }
+        }
+
         public String workingDirectory
         {
             get { return _workingDirectory; }
@@ -97,28 +157,23 @@ namespace nodepool.Model
 
         public bool restartOnMainJsFileChange
         {
-            get { return _restartOnMainJsFileChange; }
+            get { return _restartOnFileChange; }
             set
             {
                 if (value == true)
                 {
-                    //_fsWatcher = new FileSystemWatcher(Path.GetDirectoryName(mainJsFilePath), Path.GetFileName(mainJsFilePath));
-                    _fsWatcher = new FileSystemWatcher();
-                    _fsWatcher.Path = Path.GetDirectoryName(mainJsFilePath);
-                    _fsWatcher.NotifyFilter = NotifyFilters.LastWrite;
-                    /*_fsWatcher.NotifyFilter =
-                        NotifyFilters.LastAccess |
-                        NotifyFilters.CreationTime |
-                        NotifyFilters.Size |
-                        NotifyFilters.LastWrite |
-                        NotifyFilters.FileName |
-                        NotifyFilters.DirectoryName;*/
+                    if (_fsWatcher == null)
+                    {
+                        _fsWatcher = new FileSystemWatcher();
+                        _fsWatcher.Path = Path.GetDirectoryName(mainJsFilePath);
+                        _fsWatcher.NotifyFilter = NotifyFilters.LastWrite; //@see http://msdn.microsoft.com/fr-fr/library/system.io.notifyfilters.aspx
+                        _fsWatcher.IncludeSubdirectories = true;
+                        _fsWatcher.Filter = "";
+                        _fsWatcher.Changed += _fsWatcher_Changed;
+                        _fsWatcher.EnableRaisingEvents = true;
 
-                    _fsWatcher.Filter = Path.GetFileName(mainJsFilePath);
-                    _fsWatcher.Changed += new FileSystemEventHandler(_fsWatcher_Changed);
-                    _fsWatcher.EnableRaisingEvents = true;
-
-                    //Console.WriteLine("Start listerning fs");
+                        //Console.WriteLine("Start listerning fs");
+                    }
                 }
                 else
                 {
@@ -128,7 +183,7 @@ namespace nodepool.Model
                     }
                     _fsWatcher = null;
                 }
-                _restartOnMainJsFileChange = value;
+                _restartOnFileChange = value;
             }
         }
 
@@ -140,13 +195,19 @@ namespace nodepool.Model
 
         #endregion
 
+
         #region Constructors
 
         public NodeInstance(String nodeVersion)
         {
             restartOnCrash = false;
+            _restartOnFileChangePatternsString = "";
+            _lastProcessInfoCheck = DateTime.Now;
+            _processInfoTimer = new System.Threading.Timer(new TimerCallback(_processInfoTick), this, 0, 20);
+
+            _restartOnFileChangePatterns = new List<Regex>();
             _lastlyDebugged = false;
-            _restartOnMainJsFileChange = false;
+            _restartOnFileChange = false;
             _fsWatcher = null;
             _debugPort = -1;
             _webDebugPort = -1;
@@ -164,11 +225,29 @@ namespace nodepool.Model
 
         #endregion
 
+        #region ProcessInfoTImer
+
+        void _processInfoTick(Object stateInfo)
+        {
+            //OnNodeInstanceProcessInfo(new NodeInstanceProcessInfoEventArgs(this));
+            //Console.WriteLine("hiiii");
+
+            if (DateTime.Now.Ticks - _lastProcessInfoCheck.Ticks > 1000)
+            {
+                OnNodeInstanceProcessInfo(new NodeInstanceProcessInfoEventArgs(this));
+                _lastProcessInfoCheck = DateTime.Now;
+            }
+        }
+
+        #endregion
+
+
         #region Events
 
         public event NodeInstanceStartedEventHandler NodeInstanceStarted;
         public event NodeInstanceStoppedEventHandler NodeInstanceStopped;
         public event NodeInstanceStandardOutputEventHandler NodeInstanceStandardOutput;
+        public event NodeInstanceProcessInfoEventHandler NodeInstanceProcessInfo;
 
         #endregion
 
@@ -203,6 +282,15 @@ namespace nodepool.Model
                 NodeInstanceStandardOutput(this, e);
             if (e!=null)
                 Console.WriteLine("on data "+e.newString);
+        }
+
+
+        public void OnNodeInstanceProcessInfo(NodeInstanceProcessInfoEventArgs e = null)
+        {
+            if (NodeInstanceProcessInfo != null)
+                NodeInstanceProcessInfo(this, e);
+            //if (e != null)
+            //    Console.WriteLine("on process infos "+DateTime.Now.Ticks);
         }
 
         #endregion
@@ -511,7 +599,9 @@ namespace nodepool.Model
                 _process = null;
                 OnNodeInstanceStopped(new NodeInstanceStoppedEventArgs(this, true));
                 if (restartOnCrash)
+                {
                     restart();
+                }
             }
         }
 
@@ -520,27 +610,43 @@ namespace nodepool.Model
 
         #region FileSystemWatcherEventHandlers
 
+
+        /**
+         * [EN]
+         * 
+         * Double change event "bug": http://stackoverflow.com/questions/449993/vb-net-filesystemwatcher-multiple-change-events
+         */
         public void _fsWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine("file chenged " + e.FullPath);
-            
-            switch (e.ChangeType)
+            foreach (Regex r in _restartOnFileChangePatterns)
             {
-                case WatcherChangeTypes.Changed:
-                    restart();
-                    break;
+                //Console.WriteLine("test match" + e.FullPath, " with ", r.ToString());
+                if (r.IsMatch(e.FullPath))
+                {
+                    switch (e.ChangeType)
+                    {
+                        case WatcherChangeTypes.Changed:
+                            Console.WriteLine("File system WatcherChangeTypes.Changed " + e.FullPath, " matching ", r.ToString());
+                            restart();
+                            break;
 
-                case WatcherChangeTypes.Created:
-                    restart();
-                    break;
+                        case WatcherChangeTypes.Created:
+                            Console.WriteLine("File system WatcherChangeTypes.Created " + e.FullPath, " matching ", r.ToString());
+                            restart();
+                            break;
 
-                case WatcherChangeTypes.Deleted:
-                    kill();
-                    break;
+                        case WatcherChangeTypes.Deleted:
+                            Console.WriteLine("File system WatcherChangeTypes.Deleted " + e.FullPath, " matching ", r.ToString());
+                            restart();
+                            break;
 
-                case WatcherChangeTypes.Renamed:
-                    kill();
+                        case WatcherChangeTypes.Renamed:
+                            Console.WriteLine("File system WatcherChangeTypes.Renamed " + e.FullPath, " matching ", r.ToString());
+                            restart();
+                            break;
+                    }
                     break;
+                }
             }
         }
 
@@ -557,9 +663,9 @@ namespace nodepool.Model
             {
                 if (_process != null && !_process.HasExited && (b = _process.StandardOutput.ReadLine()) != null)
                 {
-                    //_processOutputString = b + "\r\n" + _processOutputString;
-                    _processOutputString = _processOutputString + "\r\n" + b;
-                    OnNodeInstanceStandardOutput(new NodeInstanceStandardOutputEventArgs(this, b));
+                        //_processOutputString = b + "\r\n" + _processOutputString;
+                        _processOutputString = _processOutputString + "\r\n" + b;
+                        OnNodeInstanceStandardOutput(new NodeInstanceStandardOutputEventArgs(this, b));
                 }
                 Thread.Sleep(5);
             }

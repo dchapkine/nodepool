@@ -75,7 +75,7 @@
             this.npmTabPage.Location = new System.Drawing.Point(4, 22);
             this.npmTabPage.Name = "npmTabPage";
             this.npmTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.npmTabPage.Size = new System.Drawing.Size(843, 525);
+            this.npmTabPage.Size = new System.Drawing.Size(843, 531);
             this.npmTabPage.TabIndex = 1;
             this.npmTabPage.Text = "npm ( local )";
             this.npmTabPage.UseVisualStyleBackColor = true;
@@ -103,7 +103,7 @@
             this.npmTerminal.Location = new System.Drawing.Point(3, 3);
             this.npmTerminal.Name = "npmTerminal";
             this.npmTerminal.nodeInstance = null;
-            this.npmTerminal.Size = new System.Drawing.Size(837, 519);
+            this.npmTerminal.Size = new System.Drawing.Size(837, 525);
             this.npmTerminal.TabIndex = 0;
             // 
             // NodeInstanceStandardOutputForm

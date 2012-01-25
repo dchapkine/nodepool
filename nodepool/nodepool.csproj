@@ -10,9 +10,24 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>nodepool</RootNamespace>
     <AssemblyName>nodepool</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -34,6 +49,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
@@ -44,8 +61,13 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Event\NodeInstanceProcessInfoEvent.cs" />
+    <Compile Include="Event\NodeInstanceRemovedEvent.cs" />
     <Compile Include="Event\NodeInstanceStandardOutputEvent.cs" />
     <Compile Include="Event\NodeInstanceStoppedEvent.cs" />
     <Compile Include="Event\NodeInstanceStartedEvent.cs" />
@@ -56,7 +78,7 @@
     <Compile Include="Form\AddNodeForm.Designer.cs">
       <DependentUpon>AddNodeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\Class1.cs" />
+    <Compile Include="Form\AppContext.cs" />
     <Compile Include="Form\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,11 +91,18 @@
     <Compile Include="Form\NodeInstanceStandardOutputForm.Designer.cs">
       <DependentUpon>NodeInstanceStandardOutputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\RestartOnChangePatternsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\RestartOnChangePatternsForm.Designer.cs">
+      <DependentUpon>RestartOnChangePatternsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\NodeInstance.cs" />
     <Compile Include="Model\NodeInstanceToolStripItem.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Model\NodePool.cs" />
+    <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\icon.Designer.cs">
@@ -109,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\NodeInstanceStandardOutputForm.resx">
       <DependentUpon>NodeInstanceStandardOutputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\RestartOnChangePatternsForm.resx">
+      <DependentUpon>RestartOnChangePatternsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -195,18 +227,35 @@
     <None Include="Resources\cmd-32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\nodejs-16.png" />
     <Content Include="Resources\openinexplorer-16.png" />
+    <None Include="Resources\remove-16.png" />
     <None Include="Resources\clear-16x16.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)\Resources\node-inspector\*" "$(TargetDir)\Resources\node-inspector" /E /I /F /Y
 
 xcopy "$(ProjectDir)\Resources\nodejs\*" "$(TargetDir)\Resources\nodejs" /E /I /F /Y
-xcopy "$(ProjectDir)\Resources\nodejs\node0.6.6\node_modules\socket.io\*" "$(TargetDir)\Resources\nodejs\node0.6.6\node_modules\socket.io" /E /I /F /Y
-xcopy "$(ProjectDir)\Resources\nodejs\node0.6.6\node_modules\node-inspector\*" "$(TargetDir)\Resources\nodejs\node0.6.6\node_modules\node-inspector" /E /I /F /Y
-xcopy "$(ProjectDir)\Resources\nodejs\node0.6.6\node_modules\npm\*" "$(TargetDir)\Resources\nodejs\node0.6.6\node_modules\npm" /E /I /F /Y
+
+xcopy "$(ProjectDir)\Examples\*" "$(TargetDir)\Examples" /E /I /F /Y
 
 </PostBuildEvent>
   </PropertyGroup>
